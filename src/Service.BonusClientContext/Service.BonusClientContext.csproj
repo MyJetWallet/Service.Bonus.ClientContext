@@ -1,0 +1,45 @@
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>net5.0</TargetFramework>
+    <UserSecretsId>96a90f7f-d6bf-4b8b-b528-d141848081c1</UserSecretsId>
+    <LangVersion>8.0</LangVersion>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Autofac.Extensions.DependencyInjection" Version="7.1.0" />
+    <PackageReference Include="Grpc.AspNetCore" Version="2.40.0" />
+    <PackageReference Include="JetBrains.Annotations" Version="2021.3.0" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="5.0.11" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Relational" Version="5.0.11" />
+    <PackageReference Include="Microsoft.Extensions.Configuration" Version="5.0.0" />
+    <PackageReference Include="Microsoft.Extensions.Logging" Version="5.0.0" />
+    <PackageReference Include="MyJetWallet.Sdk.Authorization" Version="2.0.11" />
+    <PackageReference Include="MyJetWallet.Sdk.GrpcMetrics" Version="2.0.2" />
+    <PackageReference Include="MyJetWallet.Sdk.GrpcSchema" Version="1.0.6" />
+    <PackageReference Include="MyJetWallet.Sdk.Postgres" Version="1.2.0" />
+    <PackageReference Include="MyJetWallet.Sdk.Service" Version="1.6.10" />
+    <PackageReference Include="MyJetWallet.Sdk.ServiceBus" Version="1.2.3" />
+    <PackageReference Include="MyJetWallet.Service.Bitgo.DepositDetector.Client" Version="2.0.3" />
+    <PackageReference Include="MyJetWallet.Service.ClientProfile.Client" Version="1.0.8" />
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
+    <PackageReference Include="prometheus-net.AspNetCore" Version="5.0.1" />
+    <PackageReference Include="protobuf-net.Grpc.AspNetCore" Version="1.0.152" />
+    <PackageReference Include="SimpleTrading.BaseMetrics" Version="1.0.3" />
+    <PackageReference Include="SimpleTrading.ServiceStatusReporterConnector" Version="1.0.9" />
+    <PackageReference Include="MySettingsReader" Version="1.2.1" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Service.BonusClientContext.Domain\Service.BonusClientContext.Domain.csproj" />
+    <ProjectReference Include="..\Service.BonusClientContext.Grpc\Service.BonusClientContext.Grpc.csproj" />
+    <ProjectReference Include="..\Service.BonusClientContext.Postgres\Service.BonusClientContext.Postgres.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="Dockerfile">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
+</Project>
