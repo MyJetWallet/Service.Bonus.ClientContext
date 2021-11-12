@@ -6,6 +6,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using Service.BonusClientContext.Postgres;
 
+#nullable disable
+
 namespace Service.BonusClientContext.Postgres.Migrations
 {
     [DbContext(typeof(DatabaseContext))]
@@ -16,9 +18,10 @@ namespace Service.BonusClientContext.Postgres.Migrations
 #pragma warning disable 612, 618
             modelBuilder
                 .HasDefaultSchema("bonusprogram")
-                .HasAnnotation("Relational:MaxIdentifierLength", 63)
-                .HasAnnotation("ProductVersion", "5.0.11")
-                .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
+                .HasAnnotation("ProductVersion", "6.0.0")
+                .HasAnnotation("Relational:MaxIdentifierLength", 63);
+
+            NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
 
             modelBuilder.Entity("Service.BonusClientContext.Domain.Models.ClientContext", b =>
                 {
@@ -42,7 +45,7 @@ namespace Service.BonusClientContext.Postgres.Migrations
                         .HasDefaultValue(false);
 
                     b.Property<DateTime>("LastRecord")
-                        .HasColumnType("timestamp without time zone");
+                        .HasColumnType("timestamp with time zone");
 
                     b.Property<string>("ReferrerClientId")
                         .HasMaxLength(128)
@@ -54,7 +57,7 @@ namespace Service.BonusClientContext.Postgres.Migrations
 
                     b.HasIndex("ReferrerClientId");
 
-                    b.ToTable("clientcontexts");
+                    b.ToTable("clientcontexts", "bonusprogram");
                 });
 #pragma warning restore 612, 618
         }
