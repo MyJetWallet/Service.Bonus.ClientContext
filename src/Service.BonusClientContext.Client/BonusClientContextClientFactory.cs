@@ -11,6 +11,6 @@ namespace Service.BonusClientContext.Client
         {
         }
 
-        public IHelloService GetHelloService() => CreateGrpcService<IHelloService>();
+        public IContextService GetContextService() => CreateGrpcService<IContextService>();
     }
 }

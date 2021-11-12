@@ -11,7 +11,7 @@ namespace Service.BonusClientContext.Client
         {
             var factory = new BonusClientContextClientFactory(grpcServiceUrl);
 
-            builder.RegisterInstance(factory.GetHelloService()).As<IHelloService>().SingleInstance();
+            builder.RegisterInstance(factory.GetContextService()).As<IContextService>().SingleInstance();
         }
     }
 }

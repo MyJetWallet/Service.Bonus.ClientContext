@@ -16,11 +16,11 @@ namespace TestApp
             Console.ReadLine();
 
 
-            var factory = new BonusClientContextClientFactory("http://localhost:5001");
-            var client = factory.GetHelloService();
-
-            var resp = await  client.SayHelloAsync(new HelloRequest(){Name = "Alex"});
-            Console.WriteLine(resp?.Message);
+            // var factory = new BonusClientContextClientFactory("http://localhost:5001");
+            // var client = factory.GetContextService();
+            //
+            // var resp = await  client.GetContextByClientId(new GetContextRequest(){Name = "Alex"});
+            // Console.WriteLine(resp?.Message);
 
             Console.WriteLine("End");
             Console.ReadLine();

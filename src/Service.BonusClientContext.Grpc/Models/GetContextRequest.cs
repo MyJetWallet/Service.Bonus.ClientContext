@@ -3,9 +3,9 @@ using System.Runtime.Serialization;
 namespace Service.BonusClientContext.Grpc.Models
 {
     [DataContract]
-    public class HelloRequest
+    public class GetContextRequest
     {
         [DataMember(Order = 1)]
-        public string Name { get; set; }
+        public string ClientId { get; set; }
     }
 }
