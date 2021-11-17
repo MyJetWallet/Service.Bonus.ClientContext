@@ -9,6 +9,7 @@ using Service.Bitgo.DepositDetector.Domain.Models;
 using Service.BonusClientContext.Domain.Models;
 using Service.BonusClientContext.Domain.Models.Events;
 using Service.BonusClientContext.Postgres;
+using Service.Registration.Domain.Models;
 
 namespace Service.BonusClientContext.Jobs
 {
@@ -18,7 +19,7 @@ namespace Service.BonusClientContext.Jobs
         private readonly IServiceBusPublisher<ContextUpdate> _publisher;
         private readonly ILogger<RegistrationUpdateJob> _logger;
 
-        public RegistrationUpdateJob(ISubscriber<ClientRegistrationMessage> subscriber, DbContextOptionsBuilder<DatabaseContext> dbContextOptionsBuilder, IServiceBusPublisher<ContextUpdate> publisher, ILogger<RegistrationUpdateJob> logger)
+        public RegistrationUpdateJob(ISubscriber<ClientRegisterMessage> subscriber, DbContextOptionsBuilder<DatabaseContext> dbContextOptionsBuilder, IServiceBusPublisher<ContextUpdate> publisher, ILogger<RegistrationUpdateJob> logger)
         {
             _dbContextOptionsBuilder = dbContextOptionsBuilder;
             _publisher = publisher;
@@ -27,24 +28,24 @@ namespace Service.BonusClientContext.Jobs
             
         }
 
-        private async ValueTask HandleEvent(ClientRegistrationMessage registrationMessage)
+        private async ValueTask HandleEvent(ClientRegisterMessage registrationMessage)
         {
             try
             {
                 await using var ctx = new DatabaseContext(_dbContextOptionsBuilder.Options);
-                var context = await ctx.ClientContexts.FirstOrDefaultAsync(t => t.ClientId == registrationMessage.ClientId.ClientId);
+                var context = await ctx.ClientContexts.FirstOrDefaultAsync(t => t.ClientId == registrationMessage.TraderId);
                 if (context == null)
                 {
                     context = new ClientContext
                     {
-                        ClientId = registrationMessage.ClientId.ClientId
+                        ClientId = registrationMessage.TraderId
                     };
                     await ctx.UpsertAsync(new[] { context });
 
                     var update = new ContextUpdate
                     {
                         EventType = EventType.ClientRegistered,
-                        ClientId = registrationMessage.ClientId.ClientId,
+                        ClientId = registrationMessage.TraderId,
                         Context = context,
                         RegistrationEvent = new RegistrationEvent()
                     };
@@ -54,7 +55,7 @@ namespace Service.BonusClientContext.Jobs
             }
             catch (Exception e)
             {
-                _logger.LogError(e, "When handling registration update for clientId {clientId}", registrationMessage.ClientId);
+                _logger.LogError(e, "When handling registration update for clientId {clientId}", registrationMessage.TraderId);
                 throw;
             }
         }
