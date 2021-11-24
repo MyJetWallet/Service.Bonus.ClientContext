@@ -22,6 +22,7 @@
     <PackageReference Include="MyJetWallet.Sdk.ServiceBus" Version="2.0.2" />
     <PackageReference Include="MyJetWallet.Service.Bitgo.DepositDetector.Client" Version="2.1.0" />
     <PackageReference Include="MyJetWallet.Service.ClientProfile.Client" Version="1.1.1" />
+    <PackageReference Include="MyJetWallet.Service.Liquidity.Converter.Client" Version="1.2.0" />
     <PackageReference Include="MyJetWallet.Service.Registration.Client" Version="2.2.0" />
     <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
     <PackageReference Include="prometheus-net.AspNetCore" Version="5.0.2" />

@@ -8,6 +8,7 @@ using Service.Bitgo.DepositDetector.Domain.Models;
 using Service.BonusClientContext.Domain.Models;
 using Service.BonusClientContext.Jobs;
 using Service.ClientProfile.Domain.Models;
+using Service.Liquidity.Converter.Domain.Models;
 using Service.Registration.Domain.Models;
 
 namespace Service.BonusClientContext.Modules
@@ -25,13 +26,16 @@ namespace Service.BonusClientContext.Modules
                 TopicQueueType.PermanentWithSingleConnection);
             builder.RegisterMyServiceBusSubscriberSingle<ClientRegisterMessage>(spotServiceBusClient, ClientRegisterMessage.TopicName, queueName,
                 TopicQueueType.PermanentWithSingleConnection);
-            
+            builder.RegisterMyServiceBusSubscriberSingle<SwapMessage>(spotServiceBusClient, SwapMessage.TopicName, queueName,
+                TopicQueueType.PermanentWithSingleConnection);
             builder.RegisterMyServiceBusPublisher<ContextUpdate>(spotServiceBusClient, ContextUpdate.TopicName, true);
 
 
             builder.RegisterType<DepositUpdateJob>().AsSelf().AutoActivate().SingleInstance();
             builder.RegisterType<ProfileUpdateJob>().AsSelf().AutoActivate().SingleInstance();
             builder.RegisterType<RegistrationUpdateJob>().AsSelf().AutoActivate().SingleInstance();
+            builder.RegisterType<TradeUpdateJob>().AsSelf().AutoActivate().SingleInstance();
+
         }
     }
 }

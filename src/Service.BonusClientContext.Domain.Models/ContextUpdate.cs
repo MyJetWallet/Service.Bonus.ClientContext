@@ -11,11 +11,11 @@ namespace Service.BonusClientContext.Domain.Models
         [DataMember(Order = 1)] public EventType EventType { get; set; }
         [DataMember(Order = 2)]public string ClientId { get; set; }
         [DataMember(Order = 3)]public ClientContext Context { get; set; }
-        
         [DataMember(Order = 4)] public KYCEvent KycEvent { get; set; }
         [DataMember(Order = 5)] public DepositEvent DepositEvent { get; set; }
         [DataMember(Order = 6)] public RegistrationEvent RegistrationEvent { get; set; }
         [DataMember(Order = 7)] public ReferrerAddedEvent ReferrerAddedEvent { get; set; }
+        [DataMember(Order = 8)] public TradeEvent TradeEvent { get; set; }
 
     }
 }
