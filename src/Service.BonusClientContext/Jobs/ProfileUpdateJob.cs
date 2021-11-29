@@ -56,7 +56,7 @@ namespace Service.BonusClientContext.Jobs
                     await _publisher.PublishAsync(update);
                 }
                 
-                if(!context.HasReferrer && message.NewProfile.KYCPassed){
+                if(!message.OldProfile.KYCPassed && message.NewProfile.KYCPassed){
                     
                     context.KYCDone = message.NewProfile.KYCPassed;
                     await ctx.UpsertAsync(new[] { context });
