@@ -9,6 +9,7 @@ using Service.BonusClientContext.Domain.Models;
 using Service.BonusClientContext.Jobs;
 using Service.ClientProfile.Domain.Models;
 using Service.Liquidity.Converter.Domain.Models;
+using Service.PersonalData.Client;
 using Service.Registration.Domain.Models;
 
 namespace Service.BonusClientContext.Modules
@@ -30,6 +31,7 @@ namespace Service.BonusClientContext.Modules
                 TopicQueueType.PermanentWithSingleConnection);
             builder.RegisterMyServiceBusPublisher<ContextUpdate>(spotServiceBusClient, ContextUpdate.TopicName, true);
 
+            builder.RegisterPersonalDataClient(Program.Settings.PersonalDataGrpcServiceUrl);
 
             builder.RegisterType<DepositUpdateJob>().AsSelf().AutoActivate().SingleInstance();
             builder.RegisterType<ProfileUpdateJob>().AsSelf().AutoActivate().SingleInstance();

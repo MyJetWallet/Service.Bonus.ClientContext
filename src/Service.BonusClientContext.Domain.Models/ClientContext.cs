@@ -13,6 +13,7 @@ namespace Service.BonusClientContext.Domain.Models
         [DataMember(Order = 4)] public bool HasReferrer { get; set; }
         [DataMember(Order = 5)] public bool HasReferrals { get; set; }
         [DataMember(Order = 6)] public string ReferrerClientId { get; set; }
+        [DataMember(Order = 7)] public string Country { get; set; }
 
     }
 }

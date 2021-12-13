@@ -19,5 +19,9 @@ namespace Service.BonusClientContext.Settings
         
         [YamlProperty("BonusClientContext.PostgresConnectionString")]
         public string PostgresConnectionString { get; set; }
+        
+        [YamlProperty("BonusClientContext.PersonalDataGrpcServiceUrl")]
+        public string PersonalDataGrpcServiceUrl { get; set; }
+        
     }
 }

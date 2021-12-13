@@ -3,12 +3,12 @@ using System.Threading.Tasks;
 using DotNetCoreDecorators;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
-using MyJetWallet.Domain.ServiceBus.Models;
 using MyJetWallet.Sdk.ServiceBus;
-using Service.Bitgo.DepositDetector.Domain.Models;
 using Service.BonusClientContext.Domain.Models;
 using Service.BonusClientContext.Domain.Models.Events;
 using Service.BonusClientContext.Postgres;
+using Service.PersonalData.Grpc;
+using Service.PersonalData.Grpc.Contracts;
 using Service.Registration.Domain.Models;
 
 namespace Service.BonusClientContext.Jobs
@@ -18,12 +18,14 @@ namespace Service.BonusClientContext.Jobs
         private readonly DbContextOptionsBuilder<DatabaseContext> _dbContextOptionsBuilder;
         private readonly IServiceBusPublisher<ContextUpdate> _publisher;
         private readonly ILogger<RegistrationUpdateJob> _logger;
+        private readonly IPersonalDataServiceGrpc _personalData;
 
-        public RegistrationUpdateJob(ISubscriber<ClientRegisterMessage> subscriber, DbContextOptionsBuilder<DatabaseContext> dbContextOptionsBuilder, IServiceBusPublisher<ContextUpdate> publisher, ILogger<RegistrationUpdateJob> logger)
+        public RegistrationUpdateJob(ISubscriber<ClientRegisterMessage> subscriber, DbContextOptionsBuilder<DatabaseContext> dbContextOptionsBuilder, IServiceBusPublisher<ContextUpdate> publisher, ILogger<RegistrationUpdateJob> logger, IPersonalDataServiceGrpc personalData)
         {
             _dbContextOptionsBuilder = dbContextOptionsBuilder;
             _publisher = publisher;
             _logger = logger;
+            _personalData = personalData;
             subscriber.Subscribe(HandleEvent);
             
         }
@@ -36,9 +38,14 @@ namespace Service.BonusClientContext.Jobs
                 var context = await ctx.ClientContexts.FirstOrDefaultAsync(t => t.ClientId == registrationMessage.TraderId);
                 if (context == null)
                 {
+                    var pd = await _personalData.GetByIdAsync(
+                        new GetByIdRequest() { Id = registrationMessage.TraderId });
+
+                    var country = pd.PersonalData.CountryOfRegistration;
                     context = new ClientContext
                     {
-                        ClientId = registrationMessage.TraderId
+                        ClientId = registrationMessage.TraderId,
+                        Country = country
                     };
                     await ctx.UpsertAsync(new[] { context });
 
