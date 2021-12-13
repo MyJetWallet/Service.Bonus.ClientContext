@@ -29,8 +29,8 @@
     <Authors>MyJetWallet</Authors>
     <Company>MyJetWallet</Company>
     <Product>MyJetWallet</Product>
-    <PackageProjectUrl>https://github.com/MyJetWallet/Service.BonusClientContext</PackageProjectUrl>
-    <RepositoryUrl>https://github.com/MyJetWallet/Service.BonusClientContext</RepositoryUrl>
+    <PackageProjectUrl>https://github.com/MyJetWallet/Service.Bonus.ClientContext</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/MyJetWallet/Service.Bonus.ClientContext</RepositoryUrl>
   </PropertyGroup>
 
   <Target Name="PackReferencedProjectOutputs" DependsOnTargets="BuildOnlySettings;ResolveReferences">
