@@ -29,10 +29,12 @@ namespace Service.BonusClientContext.Postgres
             modelBuilder.Entity<ClientContext>().Property(e => e.ClientId).HasMaxLength(128);
             modelBuilder.Entity<ClientContext>().Property(e => e.HasReferrals).HasDefaultValue(false);
             modelBuilder.Entity<ClientContext>().Property(e => e.HasReferrer).HasDefaultValue(false);
-            modelBuilder.Entity<ClientContext>().Property(e => e.KYCDone).HasDefaultValue(false);
             modelBuilder.Entity<ClientContext>().Property(e => e.ReferrerClientId).HasMaxLength(128);
-            modelBuilder.Entity<ClientContext>().Property(e => e.LastRecord);
-            ;
+            modelBuilder.Entity<ClientContext>().Property(e => e.LastRecord); 
+            modelBuilder.Entity<ClientContext>().Property(e => e.KycDepositAllowed).HasDefaultValue(false);
+            modelBuilder.Entity<ClientContext>().Property(e => e.KycTradeAllowed).HasDefaultValue(false);
+            modelBuilder.Entity<ClientContext>().Property(e => e.KycWithdrawalAllowed).HasDefaultValue(false);
+
             
             modelBuilder.Entity<ClientContext>().HasIndex(e => e.ReferrerClientId);
             

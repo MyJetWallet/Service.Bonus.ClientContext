@@ -55,22 +55,6 @@ namespace Service.BonusClientContext.Jobs
                     };
                     await _publisher.PublishAsync(update);
                 }
-                
-                if(!message.OldProfile.KYCPassed && message.NewProfile.KYCPassed){
-                    
-                    context.KYCDone = message.NewProfile.KYCPassed;
-                    await ctx.UpsertAsync(new[] { context });
-
-                    var update = new ContextUpdate
-                    {
-                        EventType = EventType.KYCPassed,
-                        ClientId = message.NewProfile.ClientId,
-                        Context = context,
-                        KycEvent = new KYCEvent(),
-                    };
-                    await _publisher.PublishAsync(update);
-                }
-
             }
             catch (Exception e)
             {
