@@ -57,6 +57,24 @@ namespace Service.BonusClientContext.Jobs
                     await _publisher.PublishAsync(update);
                 }
                 
+                if (context.KycDepositAllowed == true && (message.NewProfile.DepositStatus != KycOperationStatus.Allowed && message.NewProfile.DepositStatus != KycOperationStatus.AllowedWithKycAlert))
+                {
+                    context.KycDepositAllowed = false;
+                    await ctx.UpsertAsync(new[] { context });
+                    
+                    var update = new ContextUpdate
+                    {
+                        EventType = EventType.ReferrerAdded,
+                        ClientId = message.NewProfile.ClientId,
+                        Context = context,
+                        KycEvent = new KYCEvent()
+                        {
+                            KycDepositPassed = false
+                        }
+                    };
+                    await _publisher.PublishAsync(update);
+                }
+                
                 if (context.KycTradeAllowed == false && (message.NewProfile.TradeStatus == KycOperationStatus.Allowed || message.NewProfile.TradeStatus == KycOperationStatus.AllowedWithKycAlert))
                 {
                     context.KycTradeAllowed = true;
@@ -75,6 +93,24 @@ namespace Service.BonusClientContext.Jobs
                     await _publisher.PublishAsync(update);
                 }
                 
+                if (context.KycTradeAllowed == true && (message.NewProfile.TradeStatus != KycOperationStatus.Allowed && message.NewProfile.TradeStatus != KycOperationStatus.AllowedWithKycAlert))
+                {
+                    context.KycTradeAllowed = false;
+                    await ctx.UpsertAsync(new[] { context });
+                    
+                    var update = new ContextUpdate
+                    {
+                        EventType = EventType.ReferrerAdded,
+                        ClientId = message.NewProfile.ClientId,
+                        Context = context,
+                        KycEvent = new KYCEvent()
+                        {
+                            KycTradePassed = false
+                        }
+                    };
+                    await _publisher.PublishAsync(update);
+                }
+
                 if (context.KycWithdrawalAllowed == false && (message.NewProfile.WithdrawalStatus == KycOperationStatus.Allowed || message.NewProfile.WithdrawalStatus == KycOperationStatus.AllowedWithKycAlert))
                 {
                     context.KycWithdrawalAllowed = true;
@@ -88,6 +124,24 @@ namespace Service.BonusClientContext.Jobs
                         KycEvent = new KYCEvent()
                         {
                             KycWithdrawalPassed = true
+                        }
+                    };
+                    await _publisher.PublishAsync(update);
+                }
+                
+                if (context.KycWithdrawalAllowed == true && (message.NewProfile.WithdrawalStatus != KycOperationStatus.Allowed && message.NewProfile.WithdrawalStatus != KycOperationStatus.AllowedWithKycAlert))
+                {
+                    context.KycWithdrawalAllowed = false;
+                    await ctx.UpsertAsync(new[] { context });
+                    
+                    var update = new ContextUpdate
+                    {
+                        EventType = EventType.ReferrerAdded,
+                        ClientId = message.NewProfile.ClientId,
+                        Context = context,
+                        KycEvent = new KYCEvent()
+                        {
+                            KycWithdrawalPassed = false
                         }
                     };
                     await _publisher.PublishAsync(update);
