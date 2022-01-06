@@ -46,7 +46,7 @@ namespace Service.BonusClientContext.Jobs
                     
                     var update = new ContextUpdate
                     {
-                        EventType = EventType.ReferrerAdded,
+                        EventType = EventType.KYCPassed,
                         ClientId = message.NewProfile.ClientId,
                         Context = context,
                         KycEvent = new KYCEvent()
@@ -64,7 +64,7 @@ namespace Service.BonusClientContext.Jobs
                     
                     var update = new ContextUpdate
                     {
-                        EventType = EventType.ReferrerAdded,
+                        EventType = EventType.KYCPassed,
                         ClientId = message.NewProfile.ClientId,
                         Context = context,
                         KycEvent = new KYCEvent()
@@ -82,7 +82,7 @@ namespace Service.BonusClientContext.Jobs
                     
                     var update = new ContextUpdate
                     {
-                        EventType = EventType.ReferrerAdded,
+                        EventType = EventType.KYCPassed,
                         ClientId = message.NewProfile.ClientId,
                         Context = context,
                         KycEvent = new KYCEvent()
@@ -100,7 +100,7 @@ namespace Service.BonusClientContext.Jobs
                     
                     var update = new ContextUpdate
                     {
-                        EventType = EventType.ReferrerAdded,
+                        EventType = EventType.KYCPassed,
                         ClientId = message.NewProfile.ClientId,
                         Context = context,
                         KycEvent = new KYCEvent()
@@ -118,7 +118,7 @@ namespace Service.BonusClientContext.Jobs
                     
                     var update = new ContextUpdate
                     {
-                        EventType = EventType.ReferrerAdded,
+                        EventType = EventType.KYCPassed,
                         ClientId = message.NewProfile.ClientId,
                         Context = context,
                         KycEvent = new KYCEvent()
@@ -136,7 +136,7 @@ namespace Service.BonusClientContext.Jobs
                     
                     var update = new ContextUpdate
                     {
-                        EventType = EventType.ReferrerAdded,
+                        EventType = EventType.KYCPassed,
                         ClientId = message.NewProfile.ClientId,
                         Context = context,
                         KycEvent = new KYCEvent()
