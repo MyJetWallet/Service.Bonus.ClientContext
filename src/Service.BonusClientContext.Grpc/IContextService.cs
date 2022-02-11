@@ -13,6 +13,8 @@ namespace Service.BonusClientContext.Grpc
         
         [OperationContract]
         Task<AllContextsResponse> GetAllContexts();
-        
+     
+        [OperationContract]
+        Task StartCheckForAll();
     }
 }

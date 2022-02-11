@@ -7,6 +7,7 @@ using MyServiceBus.Abstractions;
 using Service.Bitgo.DepositDetector.Domain.Models;
 using Service.BonusClientContext.Domain.Models;
 using Service.BonusClientContext.Jobs;
+using Service.BonusClientContext.Services;
 using Service.ClientProfile.Domain.Models;
 using Service.KYC.Domain.Models.Messages;
 using Service.Liquidity.Converter.Domain.Models;
@@ -41,6 +42,7 @@ namespace Service.BonusClientContext.Modules
             builder.RegisterType<RegistrationUpdateJob>().AsSelf().AutoActivate().SingleInstance();
             builder.RegisterType<TradeUpdateJob>().AsSelf().AutoActivate().SingleInstance();
             builder.RegisterType<KycUpdateJob>().AsSelf().AutoActivate().SingleInstance();
+            builder.RegisterType<ManualUpdateService>().AsSelf().SingleInstance();
 
 
         }

@@ -5,6 +5,7 @@ using Microsoft.Extensions.Logging;
 using Service.BonusClientContext.Domain.Models;
 using Service.BonusClientContext.Grpc;
 using Service.BonusClientContext.Grpc.Models;
+using Service.BonusClientContext.Jobs;
 using Service.BonusClientContext.Postgres;
 using Service.BonusClientContext.Settings;
 
@@ -14,11 +15,12 @@ namespace Service.BonusClientContext.Services
     {
         private readonly ILogger<ContextService> _logger;
         private readonly DbContextOptionsBuilder<DatabaseContext> _dbContextOptionsBuilder;
-
-        public ContextService(ILogger<ContextService> logger, DbContextOptionsBuilder<DatabaseContext> dbContextOptionsBuilder)
+        private readonly ManualUpdateService _manualUpdateService;
+        public ContextService(ILogger<ContextService> logger, DbContextOptionsBuilder<DatabaseContext> dbContextOptionsBuilder, ManualUpdateService manualUpdateService)
         {
             _logger = logger;
             _dbContextOptionsBuilder = dbContextOptionsBuilder;
+            _manualUpdateService = manualUpdateService;
         }
 
         public async Task<ClientContext> GetContextByClientId(GetContextRequest request)
@@ -39,6 +41,11 @@ namespace Service.BonusClientContext.Services
             {
                 Contexts = contexts
             };
+        }
+
+        public async Task StartCheckForAll()
+        {
+            await _manualUpdateService.CheckAllClients();
         }
     }
 }
