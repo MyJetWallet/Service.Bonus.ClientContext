@@ -38,14 +38,18 @@ namespace Service.BonusClientContext.Services
                     await using var ctx = new DatabaseContext(_dbContextOptionsBuilder.Options);
                     clientContexts = await ctx.ClientContexts.OrderBy(t => t.ClientId).Skip(skip).Take(take)
                         .ToListAsync();
-                    
+
                     var updates = clientContexts.Select(context => new ContextUpdate()
                             {EventType = EventType.ManualCheckEvent, ClientId = context.ClientId, Context = context})
                         .ToList();
                     await _publisher.PublishAsync(updates);
                     
                     skip += take;
-                    _logger.LogInformation("Updating clients from {clientIdFirst} to {clientIdEnd}. Batch count {count}", clientContexts.First(), clientContexts.Last(), clientContexts.Count);
+                    if(clientContexts.Any())
+                        _logger.LogInformation("Updating clients from {clientIdFirst} to {clientIdEnd}. Batch count {count}", clientContexts.First().ClientId, clientContexts.Last().ClientId, clientContexts.Count);
+                    else
+                        _logger.LogInformation("Manual update finished");
+                    
                     await Task.Delay(5000);
                 } while (clientContexts.Any());
             }
