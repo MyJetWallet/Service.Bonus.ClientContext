@@ -26,6 +26,7 @@ namespace Service.BonusClientContext.Services
         
         public async Task CheckAllClients()
         {
+            _logger.LogInformation("Starting manual update for all clients");
             try
             {
                 List<ClientContext> clientContexts;
@@ -44,6 +45,7 @@ namespace Service.BonusClientContext.Services
                     await _publisher.PublishAsync(updates);
                     
                     skip += take;
+                    _logger.LogInformation("Updating clients from {clientIdFirst} to {clientIdEnd}. Batch count {count}", clientContexts.First(), clientContexts.Last(), clientContexts.Count);
                     await Task.Delay(5000);
                 } while (clientContexts.Any());
             }
