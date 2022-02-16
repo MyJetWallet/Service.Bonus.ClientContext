@@ -30,7 +30,7 @@ namespace Service.BonusClientContext.Services
             try
             {
                 List<ClientContext> clientContexts;
-                const int take = 500;
+                const int take = 300;
                 var skip = 0;
 
                 do
@@ -50,7 +50,7 @@ namespace Service.BonusClientContext.Services
                     else
                         _logger.LogInformation("Manual update finished");
                     
-                    await Task.Delay(5000);
+                    await Task.Delay(10000);
                 } while (clientContexts.Any());
             }
             catch (Exception e)
