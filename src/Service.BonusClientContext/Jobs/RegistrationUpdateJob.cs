@@ -58,6 +58,7 @@ namespace Service.BonusClientContext.Jobs
                     };
 
                     await _publisher.PublishAsync(update);
+                    _logger.LogDebug("Sending Event with type {type} to client {clientId}", EventType.ClientRegistered.ToString(),registrationMessage.TraderId);
                 }
             }
             catch (Exception e)
