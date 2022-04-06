@@ -45,7 +45,8 @@ namespace Service.BonusClientContext.Jobs
                     context = new ClientContext
                     {
                         ClientId = registrationMessage.TraderId,
-                        Country = country
+                        Country = country,
+                        RegistrationDate = DateTime.UtcNow
                     };
                     await ctx.UpsertAsync(new[] { context });
 
@@ -55,6 +56,9 @@ namespace Service.BonusClientContext.Jobs
                         ClientId = registrationMessage.TraderId,
                         Context = context,
                         RegistrationEvent = new RegistrationEvent()
+                        {
+                            RegistrationDate = DateTime.UtcNow
+                        }
                     };
 
                     await _publisher.PublishAsync(update);

@@ -30,6 +30,9 @@ namespace Service.BonusClientContext.Jobs
         {
             try
             {
+                if(deposit.Status != DepositStatus.Processed)
+                    return;
+                
                 await using var ctx = new DatabaseContext(_dbContextOptionsBuilder.Options);
                 var context = await ctx.ClientContexts.FirstOrDefaultAsync(t => t.ClientId == deposit.ClientId) ??
                               new ClientContext

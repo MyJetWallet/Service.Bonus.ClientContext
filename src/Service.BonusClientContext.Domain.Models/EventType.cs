@@ -8,6 +8,7 @@ namespace Service.BonusClientContext.Domain.Models
         DepositMade,
         TradeMade,
         WithdrawalMade,
-        ManualCheckEvent
+        ManualCheckEvent,
+        ClientLoggedIn
     }
 }

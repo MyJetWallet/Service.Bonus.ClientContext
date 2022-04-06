@@ -16,7 +16,6 @@ namespace Service.BonusClientContext.Domain.Models
         [DataMember(Order = 8)] public bool KycDepositAllowed { get; set; }
         [DataMember(Order = 9)] public bool KycTradeAllowed { get; set; }
         [DataMember(Order = 10)] public bool KycWithdrawalAllowed { get; set; }
-
-
+        [DataMember(Order = 11)] public DateTime RegistrationDate { get; set; }
     }
 }

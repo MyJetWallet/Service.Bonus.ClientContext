@@ -42,6 +42,7 @@ namespace Service.BonusClientContext.Modules
             builder.RegisterType<RegistrationUpdateJob>().AsSelf().AutoActivate().SingleInstance();
             builder.RegisterType<TradeUpdateJob>().AsSelf().AutoActivate().SingleInstance();
             builder.RegisterType<KycUpdateJob>().AsSelf().AutoActivate().SingleInstance();
+            builder.RegisterType<LoginUpdateJob>().AsSelf().AutoActivate().SingleInstance();
             builder.RegisterType<ManualUpdateService>().AsSelf().SingleInstance();
 
 
