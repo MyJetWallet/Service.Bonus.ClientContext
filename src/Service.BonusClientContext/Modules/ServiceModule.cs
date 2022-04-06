@@ -2,6 +2,7 @@
 using Autofac.Core;
 using Autofac.Core.Registration;
 using MyJetWallet.Domain.ServiceBus;
+using MyJetWallet.Sdk.Authorization.ServiceBus;
 using MyJetWallet.Sdk.ServiceBus;
 using MyServiceBus.Abstractions;
 using Service.Bitgo.DepositDetector.Domain.Models;
@@ -33,6 +34,8 @@ namespace Service.BonusClientContext.Modules
                 TopicQueueType.PermanentWithSingleConnection);
             builder.RegisterMyServiceBusSubscriberSingle<KycProfileUpdatedMessage>(spotServiceBusClient,
                 KycProfileUpdatedMessage.TopicName, queueName, TopicQueueType.PermanentWithSingleConnection);
+            builder.RegisterMyServiceBusSubscriberSingle<SessionAuditEvent>(spotServiceBusClient,
+                SessionAuditEvent.TopicName, queueName, TopicQueueType.PermanentWithSingleConnection);
             builder.RegisterMyServiceBusPublisher<ContextUpdate>(spotServiceBusClient, ContextUpdate.TopicName, true);
 
             builder.RegisterPersonalDataClient(Program.Settings.PersonalDataGrpcServiceUrl);
