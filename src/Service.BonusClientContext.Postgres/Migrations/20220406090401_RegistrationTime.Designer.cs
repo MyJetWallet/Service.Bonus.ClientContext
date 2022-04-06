@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using Service.BonusClientContext.Postgres;
@@ -11,9 +12,10 @@ using Service.BonusClientContext.Postgres;
 namespace Service.BonusClientContext.Postgres.Migrations
 {
     [DbContext(typeof(DatabaseContext))]
-    partial class DatabaseContextModelSnapshot : ModelSnapshot
+    [Migration("20220406090401_RegistrationTime")]
+    partial class RegistrationTime
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -58,9 +60,7 @@ namespace Service.BonusClientContext.Postgres.Migrations
                         .HasDefaultValue(false);
 
                     b.Property<DateTime>("LastRecord")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("timestamp with time zone")
-                        .HasDefaultValue(new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc));
+                        .HasColumnType("timestamp with time zone");
 
                     b.Property<string>("ReferrerClientId")
                         .HasMaxLength(128)

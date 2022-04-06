@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
@@ -34,6 +35,7 @@ namespace Service.BonusClientContext.Postgres
             modelBuilder.Entity<ClientContext>().Property(e => e.KycDepositAllowed).HasDefaultValue(false);
             modelBuilder.Entity<ClientContext>().Property(e => e.KycTradeAllowed).HasDefaultValue(false);
             modelBuilder.Entity<ClientContext>().Property(e => e.KycWithdrawalAllowed).HasDefaultValue(false);
+            modelBuilder.Entity<ClientContext>().Property(e => e.LastRecord).HasDefaultValue(DateTime.MinValue); 
 
             
             modelBuilder.Entity<ClientContext>().HasIndex(e => e.ReferrerClientId);
