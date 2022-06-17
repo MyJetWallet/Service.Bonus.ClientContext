@@ -9,6 +9,7 @@ namespace Service.BonusClientContext.Domain.Models
         TradeMade,
         WithdrawalMade,
         ManualCheckEvent,
-        ClientLoggedIn
+        ClientLoggedIn,
+        FiatDepositMade
     }
 }

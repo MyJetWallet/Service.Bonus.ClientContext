@@ -34,14 +34,17 @@ namespace Service.BonusClientContext.Jobs
                     return;
                 
                 await using var ctx = new DatabaseContext(_dbContextOptionsBuilder.Options);
-                var context = await ctx.ClientContexts.FirstOrDefaultAsync(t => t.ClientId == deposit.ClientId) ??
-                              new ClientContext
-                              {
-                                  ClientId = deposit.ClientId
-                              };
+                var context = await ctx.ClientContexts.FirstOrDefaultAsync(t => t.ClientId == deposit.ClientId);
 
-                //TODO: deposit actions
-                await ctx.UpsertAsync(new[] { context });
+                if (context == null)
+                {
+                    context = new ClientContext
+                    {
+                        ClientId = deposit.ClientId
+                    };
+
+                    await ctx.UpsertAsync(new[] {context});
+                }
 
                 var update = new ContextUpdate
                 {
@@ -60,6 +63,29 @@ namespace Service.BonusClientContext.Jobs
                 
                 _logger.LogDebug("Sending Event with type {type} to client {clientId}", 
                     EventType.DepositMade.ToString(), deposit.ClientId);
+
+                if (deposit.Integration == "CircleCard" || deposit.Integration == "CircleBankTransfer")
+                {
+                    update = new ContextUpdate
+                    {
+                        EventType = EventType.FiatDepositMade,
+                        ClientId = deposit.ClientId,
+                        Context = context,
+                        DepositEvent = new DepositEvent
+                        {
+                            DepositId = deposit.Id.ToString(),
+                            AssetId = deposit.AssetSymbol,
+                            Amount = (decimal) deposit.Amount,
+                        },
+                    };
+                    
+                    await _publisher.PublishAsync(update);
+                
+                    _logger.LogDebug("Sending Event with type {type} to client {clientId}", 
+                        EventType.FiatDepositMade.ToString(), deposit.ClientId);
+                }
+
+                
             }
             catch (Exception e)
             {
