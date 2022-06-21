@@ -23,5 +23,7 @@ namespace Service.BonusClientContext.Settings
         [YamlProperty("BonusClientContext.PersonalDataGrpcServiceUrl")]
         public string PersonalDataGrpcServiceUrl { get; set; }
         
+        [YamlProperty("BonusClientContext.ClientProfileGrpcServiceUrl")]
+        public string ClientProfileGrpcServiceUrl { get; set; }
     }
 }

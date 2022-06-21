@@ -7,6 +7,8 @@ using MyJetWallet.Sdk.ServiceBus;
 using Service.BonusClientContext.Domain.Models;
 using Service.BonusClientContext.Domain.Models.Events;
 using Service.BonusClientContext.Postgres;
+using Service.ClientProfile.Grpc;
+using Service.ClientProfile.Grpc.Models.Requests;
 using Service.PersonalData.Grpc;
 using Service.PersonalData.Grpc.Contracts;
 using Service.Registration.Domain.Models;
@@ -19,13 +21,14 @@ namespace Service.BonusClientContext.Jobs
         private readonly IServiceBusPublisher<ContextUpdate> _publisher;
         private readonly ILogger<RegistrationUpdateJob> _logger;
         private readonly IPersonalDataServiceGrpc _personalData;
-
-        public RegistrationUpdateJob(ISubscriber<ClientRegisterMessage> subscriber, DbContextOptionsBuilder<DatabaseContext> dbContextOptionsBuilder, IServiceBusPublisher<ContextUpdate> publisher, ILogger<RegistrationUpdateJob> logger, IPersonalDataServiceGrpc personalData)
+        private readonly IClientProfileService _clientProfile;
+        public RegistrationUpdateJob(ISubscriber<ClientRegisterMessage> subscriber, DbContextOptionsBuilder<DatabaseContext> dbContextOptionsBuilder, IServiceBusPublisher<ContextUpdate> publisher, ILogger<RegistrationUpdateJob> logger, IPersonalDataServiceGrpc personalData, IClientProfileService clientProfile)
         {
             _dbContextOptionsBuilder = dbContextOptionsBuilder;
             _publisher = publisher;
             _logger = logger;
             _personalData = personalData;
+            _clientProfile = clientProfile;
             subscriber.Subscribe(HandleEvent);
             
         }
@@ -42,11 +45,19 @@ namespace Service.BonusClientContext.Jobs
                         new GetByIdRequest() { Id = registrationMessage.TraderId });
 
                     var country = pd.PersonalData.CountryOfRegistration;
+
+                    var profile = await _clientProfile.GetOrCreateProfile(new GetClientProfileRequest()
+                    {
+                        ClientId = registrationMessage.TraderId
+                    });
+                    
                     context = new ClientContext
                     {
                         ClientId = registrationMessage.TraderId,
                         Country = country,
-                        RegistrationDate = DateTime.UtcNow
+                        RegistrationDate = DateTime.UtcNow,
+                        ReferrerClientId = profile.ReferrerClientId,
+                        HasReferrer = !string.IsNullOrWhiteSpace(profile.ReferrerClientId)
                     };
                     await ctx.UpsertAsync(new[] { context });
 

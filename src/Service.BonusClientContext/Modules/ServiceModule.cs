@@ -9,6 +9,7 @@ using Service.Bitgo.DepositDetector.Domain.Models;
 using Service.BonusClientContext.Domain.Models;
 using Service.BonusClientContext.Jobs;
 using Service.BonusClientContext.Services;
+using Service.ClientProfile.Client;
 using Service.ClientProfile.Domain.Models;
 using Service.KYC.Domain.Models.Messages;
 using Service.Liquidity.Converter.Domain.Models;
@@ -39,9 +40,10 @@ namespace Service.BonusClientContext.Modules
             builder.RegisterMyServiceBusPublisher<ContextUpdate>(spotServiceBusClient, ContextUpdate.TopicName, true);
 
             builder.RegisterPersonalDataClient(Program.Settings.PersonalDataGrpcServiceUrl);
-
+            builder.RegisterClientProfileClientWithoutCache(Program.Settings.ClientProfileGrpcServiceUrl);
+            
             builder.RegisterType<DepositUpdateJob>().AsSelf().AutoActivate().SingleInstance();
-            builder.RegisterType<ProfileUpdateJob>().AsSelf().AutoActivate().SingleInstance();
+            //builder.RegisterType<ProfileUpdateJob>().AsSelf().AutoActivate().SingleInstance();
             builder.RegisterType<RegistrationUpdateJob>().AsSelf().AutoActivate().SingleInstance();
             builder.RegisterType<TradeUpdateJob>().AsSelf().AutoActivate().SingleInstance();
             builder.RegisterType<KycUpdateJob>().AsSelf().AutoActivate().SingleInstance();
