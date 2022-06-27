@@ -1,9 +1,6 @@
 ﻿using Autofac;
-using Autofac.Core;
-using Autofac.Core.Registration;
-using MyJetWallet.Domain.ServiceBus;
-using MyJetWallet.Sdk.Authorization.ServiceBus;
 using MyJetWallet.Sdk.ServiceBus;
+using MyJetWallet.ServiceBus.SessionAudit.Models;
 using MyServiceBus.Abstractions;
 using Service.Bitgo.DepositDetector.Domain.Models;
 using Service.BonusClientContext.Domain.Models;
@@ -24,7 +21,8 @@ namespace Service.BonusClientContext.Modules
         {
             var spotServiceBusClient = builder.RegisterMyServiceBusTcpClient(Program.ReloadedSettings(e => e.SpotServiceBusHostPort), Program.LogFactory);
 
-            var queueName = "Service.Bonus.ClientContext";
+            const string queueName = "Service.Bonus.ClientContext";
+
             builder.RegisterMyServiceBusSubscriberSingle<ClientProfileUpdateMessage>(spotServiceBusClient,
                 ClientProfileUpdateMessage.TopicName, queueName, TopicQueueType.PermanentWithSingleConnection);
             builder.RegisterMyServiceBusSubscriberSingle<Deposit>(spotServiceBusClient, Deposit.TopicName, queueName,
@@ -49,8 +47,6 @@ namespace Service.BonusClientContext.Modules
             builder.RegisterType<KycUpdateJob>().AsSelf().AutoActivate().SingleInstance();
             builder.RegisterType<LoginUpdateJob>().AsSelf().AutoActivate().SingleInstance();
             builder.RegisterType<ManualUpdateService>().AsSelf().SingleInstance();
-
-
         }
     }
 }
